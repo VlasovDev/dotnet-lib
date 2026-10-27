@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Color x:Key="Primary">#1F6F5C</Color>
+    <Color x:Key="PrimaryDark">#154C3F</Color>
+    <Color x:Key="PrimarySoft">#E3F0EB</Color>
+    <Color x:Key="Accent">#E8A33D</Color>
+
+    <Color x:Key="Background">#F4F1EA</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="FieldBackground">#F8F6F1</Color>
+    <Color x:Key="BorderColor">#E4DFD4</Color>
+
+    <Color x:Key="TextPrimary">#1B2B27</Color>
+    <Color x:Key="TextMuted">#6D7B77</Color>
+
+    <Color x:Key="Success">#2E7D32</Color>
+    <Color x:Key="SuccessSoft">#E8F3E9</Color>
+    <Color x:Key="Danger">#B3261E</Color>
+    <Color x:Key="DangerSoft">#FAE7E5</Color>
+
+    <Color x:Key="White">#FFFFFF</Color>
+    <Color x:Key="Black">#000000</Color>
+</ResourceDictionary>

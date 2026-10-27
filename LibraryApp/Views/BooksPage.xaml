@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LibraryApp.Views.BooksPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:LibraryApp.Models"
+    Title="Библиотека"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid Padding="20,18,20,18" RowDefinitions="Auto,Auto,*" RowSpacing="14">
+
+        <!-- Шапка -->
+        <Border
+            BackgroundColor="{StaticResource Primary}"
+            Padding="20"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 22">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                    <Label
+                        FontAttributes="Bold"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="26"
+                        Text="Библиотека"
+                        TextColor="{StaticResource White}" />
+                    <Label
+                        FontSize="13"
+                        Text="Каталог книг в наличии"
+                        TextColor="#CFE3DC" />
+                </VerticalStackLayout>
+
+                <Button
+                    Grid.Column="1"
+                    BackgroundColor="{StaticResource White}"
+                    Clicked="OnAddClicked"
+                    CornerRadius="18"
+                    FontSize="14"
+                    HeightRequest="40"
+                    MinimumHeightRequest="40"
+                    Padding="16,0"
+                    Text="+ Добавить"
+                    TextColor="{StaticResource Primary}"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Поиск и статистика -->
+        <VerticalStackLayout Grid.Row="1" Spacing="10">
+            <Border Style="{StaticResource SearchBorder}">
+                <SearchBar
+                    x:Name="SearchBar"
+                    BackgroundColor="Transparent"
+                    CancelButtonColor="{StaticResource TextMuted}"
+                    Placeholder="Поиск по названию, автору, жанру или ISBN"
+                    TextChanged="OnSearchTextChanged" />
+            </Border>
+
+            <HorizontalStackLayout Spacing="8">
+                <Border Style="{StaticResource StatChip}">
+                    <Label
+                        x:Name="TotalLabel"
+                        Style="{StaticResource StatText}"
+                        Text="Всего книг: 0" />
+                </Border>
+                <Border Style="{StaticResource StatChip}">
+                    <Label
+                        x:Name="AvailableLabel"
+                        Style="{StaticResource StatText}"
+                        Text="В наличии: 0 экз." />
+                </Border>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Список книг -->
+        <CollectionView
+            x:Name="BooksView"
+            Grid.Row="2"
+            ItemsLayout="VerticalList"
+            SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="0,40"
+                    HorizontalOptions="Center"
+                    Spacing="6">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HorizontalTextAlignment="Center"
+                        Text="Книг пока нет" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource MutedLabel}"
+                        Text="Нажмите «+ Добавить», чтобы добавить первую книгу." />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Book">
+                    <Border Margin="0,0,0,10" Style="{StaticResource CardBorder}">
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            ColumnSpacing="12"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="12">
+
+                            <VerticalStackLayout Spacing="3">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Title}" />
+                                <Label
+                                    FontSize="13"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="{Binding Subtitle}" />
+                                <Label
+                                    FontSize="12"
+                                    Style="{StaticResource MutedLabel}"
+                                    Text="{Binding IsbnText}" />
+                            </VerticalStackLayout>
+
+                            <Border
+                                Grid.Column="1"
+                                Padding="10,5"
+                                BackgroundColor="{StaticResource SuccessSoft}"
+                                StrokeThickness="0"
+                                StrokeShape="RoundRectangle 12"
+                                VerticalOptions="Start">
+                                <Border.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsAvailable}"
+                                        TargetType="Border"
+                                        Value="False">
+                                        <Setter Property="BackgroundColor" Value="{StaticResource DangerSoft}" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    Text="{Binding AvailabilityText}"
+                                    TextColor="{StaticResource Success}">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsAvailable}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="TextColor" Value="{StaticResource Danger}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Border>
+
+                            <Grid
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                ColumnDefinitions="Auto,Auto,Auto,*"
+                                ColumnSpacing="8">
+                                <Button
+                                    Clicked="OnCheckoutClicked"
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding IsAvailable}"
+                                    Style="{StaticResource ChipButton}"
+                                    Text="Выдать" />
+                                <Button
+                                    Grid.Column="1"
+                                    Clicked="OnReturnClicked"
+                                    CommandParameter="{Binding .}"
+                                    IsEnabled="{Binding CanReturn}"
+                                    Style="{StaticResource ChipButton}"
+                                    Text="Вернуть" />
+                                <Button
+                                    Grid.Column="2"
+                                    Clicked="OnEditClicked"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource ChipButton}"
+                                    Text="Изменить" />
+                                <Button
+                                    Grid.Column="3"
+                                    Clicked="OnDeleteClicked"
+                                    CommandParameter="{Binding .}"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource DangerChipButton}"
+                                    Text="Удалить" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

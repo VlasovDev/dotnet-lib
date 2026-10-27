@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LibraryApp.Views.BookEditPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:LibraryApp.Models"
+    x:DataType="models:Book"
+    Title="Карточка книги"
+    BackgroundColor="{StaticResource Background}"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView x:Name="FormScroll" SizeChanged="OnFormSizeChanged">
+        <VerticalStackLayout
+            x:Name="FormContent"
+            Padding="20"
+            HorizontalOptions="Center"
+            Spacing="16">
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Button
+                    BackgroundColor="{StaticResource CardBackground}"
+                    Clicked="OnCancelClicked"
+                    CornerRadius="20"
+                    FontSize="18"
+                    HeightRequest="40"
+                    MinimumHeightRequest="40"
+                    MinimumWidthRequest="40"
+                    Padding="0"
+                    Text="←"
+                    TextColor="{StaticResource Primary}"
+                    VerticalOptions="Start"
+                    WidthRequest="40" />
+
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label
+                        x:Name="HeaderLabel"
+                        Style="{StaticResource PageTitle}"
+                        Text="Новая книга" />
+                    <Label
+                        Style="{StaticResource MutedLabel}"
+                        Text="Заполните информацию о книге. Поля со звёздочкой обязательны." />
+                </VerticalStackLayout>
+            </Grid>
+
+            <Border Style="{StaticResource CardBorder}">
+                <VerticalStackLayout Spacing="14">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Style="{StaticResource FieldLabel}" Text="НАЗВАНИЕ *" />
+                        <Entry
+                            MaxLength="200"
+                            Placeholder="Например, Мастер и Маргарита"
+                            Text="{Binding Title}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Style="{StaticResource FieldLabel}" Text="АВТОР *" />
+                        <Entry
+                            MaxLength="200"
+                            Placeholder="Например, Михаил Булгаков"
+                            Text="{Binding Author}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Style="{StaticResource FieldLabel}" Text="ЖАНР" />
+                            <Entry
+                                MaxLength="100"
+                                Placeholder="Роман"
+                                Text="{Binding Genre}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Style="{StaticResource FieldLabel}" Text="ГОД ИЗДАНИЯ" />
+                            <Entry
+                                Keyboard="Numeric"
+                                MaxLength="4"
+                                Placeholder="2024"
+                                Text="{Binding Year}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Style="{StaticResource FieldLabel}" Text="ISBN" />
+                        <Entry
+                            MaxLength="32"
+                            Placeholder="978-5-..."
+                            Text="{Binding Isbn}" />
+                    </VerticalStackLayout>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Style="{StaticResource FieldLabel}" Text="ВСЕГО ЭКЗЕМПЛЯРОВ *" />
+                            <Entry
+                                Keyboard="Numeric"
+                                MaxLength="5"
+                                Text="{Binding TotalCopies}" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Style="{StaticResource FieldLabel}" Text="В НАЛИЧИИ СЕЙЧАС" />
+                            <Entry
+                                Keyboard="Numeric"
+                                MaxLength="5"
+                                Text="{Binding AvailableCopies}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Style="{StaticResource FieldLabel}" Text="ОПИСАНИЕ" />
+                        <Editor
+                            HeightRequest="110"
+                            MaxLength="1000"
+                            Placeholder="Краткая аннотация"
+                            Text="{Binding Description}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label
+                x:Name="ErrorLabel"
+                FontSize="13"
+                IsVisible="False"
+                TextColor="{StaticResource Danger}" />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Button
+                    Clicked="OnSaveClicked"
+                    Text="Сохранить" />
+                <Button
+                    Grid.Column="1"
+                    Clicked="OnCancelClicked"
+                    Style="{StaticResource SecondaryButton}"
+                    Text="Отмена" />
+            </Grid>
+
+            <Button
+                x:Name="DeleteButton"
+                Clicked="OnDeleteClicked"
+                IsVisible="False"
+                Style="{StaticResource DangerButton}"
+                Text="Удалить книгу" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
